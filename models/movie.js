@@ -1,14 +1,16 @@
-import { readJSON } from '../utils'
 import { randomUUID } from 'node:crypto'
-const movies = readJSON('../movies.json')
+import { readJSON } from '../utils.js'
+
+const movies = readJSON('./movies.json')
 
 export class MovieModel {
     static async getAll({ genre }) {
-        if (genere) {
-            return moviesRouter.filter(
+        if (genre) {
+            return movies.filter(
                 movie => movie.genre.some(g => g.toLowerCase() === genre.toLowerCase())
             )
         }
+
         return movies
     }
 
@@ -18,14 +20,11 @@ export class MovieModel {
     }
 
     static async create({ input }) {
-        // en base de datos
         const newMovie = {
-            id: randomUUID(), // uuid v4
+            id: randomUUID(),
             ...input
         }
 
-        // Esto no sería REST, porque estamos guardando
-        // el estado de la aplicación en memoria
         movies.push(newMovie)
 
         return newMovie
@@ -34,11 +33,12 @@ export class MovieModel {
     static async delete({ id }) {
         const movieIndex = movies.findIndex(movie => movie.id === id)
         if (movieIndex === -1) return false
+
         movies.splice(movieIndex, 1)
         return true
     }
 
-    static async update( {id, input} ){
+    static async update({ id, input }) {
         const movieIndex = movies.findIndex(movie => movie.id === id)
         if (movieIndex === -1) return false
 

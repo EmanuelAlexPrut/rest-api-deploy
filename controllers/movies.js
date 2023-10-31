@@ -1,10 +1,11 @@
-import { MovieModel } from "../models/movie"
+import { MovieModel } from '../models/movie.js'
+// import { MovieModel } from '../models/database/movie.js'
+import { validateMovie, validatePartialMovie } from '../schemas/movies.js'
 
 export class MovieController {
     static async getAll(req, res) {
         const { genre } = req.query
         const movies = await MovieModel.getAll({ genre })
-
         res.json(movies)
     }
 
